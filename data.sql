@@ -29,3 +29,38 @@ VALUES (9, 'Boarmon', '2005-06-07', 7, true, 20.4);
 
 INSERT INTO animals (id, name, date_of_birth, escape_attempts, neutered, weight_kg)  
 VALUES (10, 'Blossom', '1998-10-13', 3, true, 17);
+
+BEGIN TRANSACTION; -- start transaction
+
+-- sets all items/rows in the species column to unspecified
+UPDATE animals SET species = 'unspecified';
+
+--verify the changes were made
+SELECT * FROM animals;
+
+-- Undo changes, species column is now empty
+ROLLBACK;
+
+BEGIN;
+
+UPDATE animals SET species = 'digimon' WHERE name LIKE '%mon';
+
+UPDATE animals SET species = 'pokemon' WHERE species IS NULL;
+
+COMMIT;
+
+SELECT name, species FROM animals;
+
+BEGIN;
+
+DELETE FROM animals;
+
+ROLLBACK;
+
+SELECT * FROM animals;
+
+BEGIN;
+
+DELETE FROM animals WHERE date_of_birth > 'Jan 1, 2022';
+
+SAVE TRANSACTION sp1;
