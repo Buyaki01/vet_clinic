@@ -1,17 +1,17 @@
 /*Queries that provide answers to the questions from all projects.*/
 
-SELECT * from animals WHERE name LIKE '%mon';
+SELECT COUNT(*) FROM animals;
 
-SELECT name FROM animals WHERE date_of_birth BETWEEN '2016-01-01' AND '2019-01-01';
+SELECT COUNT(*) FROM animals WHERE escape_attempts = 0;
 
-SELECT name FROM animals WHERE neutered = TRUE AND escape_attempts < 3;
+SELECT AVG(weight_kg) FROM animals;
 
-SELECT date_of_birth FROM animals WHERE name = 'Agumon' OR  name = 'Pikachu';
+/* Sum escape attempts and compare between neutered and non-neutered */
+SELECT neutered, SUM(escape_attempts) FROM animals GROUP BY neutered;
 
-SELECT name, escape_attempts FROM animals WHERE weight_kg < 10.5;
+/* Minimum and maximum weights of each type of animal*/
+SELECT neutered, MIN(weight_kg), MAX(weight_kg) FROM animals GROUP BY neutered;
 
-SELECT *  FROM animals WHERE neutered = TRUE;
-
-SELECT *  FROM animals WHERE name <> 'Gabumon';
-
-SELECT * FROM animals WHERE weight_kg >=10.4 AND weight_kg <=17.3;
+/* Average number of escape attempts per animal type of those born between 1990 and 2000 */
+SELECT neutered, AVG(escape_attempts) FROM animals WHERE date_of_birth 
+BETWEEN 'Jan 1, 1990' AND 'Dec 31, 2000' GROUP BY neutered;
