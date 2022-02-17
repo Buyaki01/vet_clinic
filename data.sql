@@ -32,23 +32,29 @@ VALUES (10, 'Blossom', '1998-10-13', 3, true, 17);
 
 BEGIN TRANSACTION; -- start transaction
 
--- sets all items/rows in the species column to unspecified
 UPDATE animals SET species = 'unspecified';
 
 --verify the changes were made
 SELECT * FROM animals;
 
--- Undo changes, species column is now empty
+-- Undo changes
 ROLLBACK;
+
+--verify whether the species column went back to how it was before the update
+SELECT * FROM animals;
 
 BEGIN;
 
 UPDATE animals SET species = 'digimon' WHERE name LIKE '%mon';
 
+-- Verify that the species column got updated
+SELECT name, species FROM animals;
+
 UPDATE animals SET species = 'pokemon' WHERE species IS NULL;
 
 COMMIT;
 
+-- Verify that change was made and persists after commit.
 SELECT name, species FROM animals;
 
 BEGIN;
