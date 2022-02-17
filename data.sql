@@ -32,8 +32,6 @@ VALUES (10, 'Blossom', '1998-10-13', 3, true, 17);
 
 BEGIN TRANSACTION; -- start transaction
 
-UPDATE animals SET species = 'unspecified';
-
 -- Undo changes
 ROLLBACK;
 
@@ -42,12 +40,8 @@ SELECT * FROM animals;
 
 BEGIN;
 
-UPDATE animals SET species = 'digimon' WHERE name LIKE '%mon';
-
 -- Verify that the species column got updated
 SELECT name, species FROM animals;
-
-UPDATE animals SET species = 'pokemon' WHERE species IS NULL;
 
 COMMIT;
 
@@ -68,10 +62,6 @@ DELETE FROM animals WHERE date_of_birth > 'Jan 1, 2022';
 
 SAVEPOINT SPECIES;
 
-UPDATE animals SET weight_kg = weight_kg * -1;
-
 ROLLBACK TO SPECIES;
-
-UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0;
 
 COMMIT TRANSACTION;
