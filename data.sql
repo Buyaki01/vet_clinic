@@ -34,9 +34,6 @@ BEGIN TRANSACTION; -- start transaction
 
 UPDATE animals SET species = 'unspecified';
 
---verify the changes were made
-SELECT * FROM animals;
-
 -- Undo changes
 ROLLBACK;
 
