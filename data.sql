@@ -32,13 +32,10 @@ VALUES (10, 'Blossom', '1998-10-13', 3, true, 17);
 
 BEGIN TRANSACTION; -- start transaction
 
---verify the changes were made
-SELECT * FROM animals;
-
 -- Undo changes
 ROLLBACK;
 
---verify whether the species column went back to how it was before the update
+--verify whether the species column went back to how it was before the update, changing species = 'unspecified'
 SELECT * FROM animals;
 
 BEGIN;
