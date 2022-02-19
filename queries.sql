@@ -90,26 +90,21 @@ SELECT
   ORDER BY vs.date_of_visit ASC
   LIMIT 1;
 
-SELECT 
-  a.id AS animal_id,
-  a.name AS animal_name,
-  a.date_of_birth,
-  v.id AS vet_id,
-  v.name AS vet_name, 
-  v.age AS vet_age,
-  date_of_visit
-  FROM visits vs INNER JOIN animals a ON a.id = vs.animals_id
-  INNER JOIN vets v
-  ON v.id = vs.vets_id;
+SELECT animals.*, vets.*, vistis.visit_date
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN vets ON vets.id = visits.vets_id
+ORDER BY visits.visit_date DESC
+LIMIT 1;
 
 SELECT 
-  v.name AS vet_name,
-  COUNT(*)
-  FROM visits vs LEFT JOIN vets v ON v.id = vs.vets_id
-  LEFT JOIN specializations sp 
-    ON sp.vets_id = vs.vets_id
-  WHERE sp.id IS NULL
-  GROUP BY v.name;
+v.name AS vet_name,
+COUNT(*)
+FROM visits vs LEFT JOIN vets v ON v.id = vs.vets_id
+LEFT JOIN specializations sp 
+  ON sp.vets_id = vs.vets_id
+WHERE sp.id IS NULL
+GROUP BY v.name;
 
 SELECT 
   v.name AS vet_name,
