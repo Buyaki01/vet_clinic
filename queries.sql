@@ -90,11 +90,11 @@ SELECT
   ORDER BY vs.date_of_visit ASC
   LIMIT 1;
 
-SELECT animals.*, vets.*, vistis.visit_date
+SELECT animals.*, vets.*, visits.date_of_visit
 FROM visits
 LEFT JOIN animals ON animals.id = visits.animals_id
 LEFT JOIN vets ON vets.id = visits.vets_id
-ORDER BY visits.visit_date DESC
+ORDER BY visits.date_of_visit DESC
 LIMIT 1;
 
 SELECT 
