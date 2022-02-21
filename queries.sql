@@ -47,39 +47,20 @@ SELECT v.name AS vet_name, a.name AS animal_name, vs.date_of_visit
   ORDER BY vs.date_of_visit DESC
   LIMIT 1;
 
-SELECT v.name as vet_name, COUNT(date_of_visit) 
-  FROM visits vs LEFT JOIN vets v ON vs.vets_id = v.id
-  WHERE name = 'Stephanie Mendez'
-  GROUP BY v.name;
+SELECT vets.name, COUNT(date_of_visit) FROM vets LEFT JOIN visits ON vets.id = visits.vets_id WHERE vets.name='Stephanie Mendez' GROUP BY vets.name;
 
-SELECT 
-  sp.id AS specialty_id, 
-  sp.species_id, 
-  sp.vets_id, 
-  v.name AS vet_name, 
-  s.name AS species_name  
-  FROM specializations sp FULL OUTER JOIN species s ON s.id = sp.species_id
-  FULL OUTER JOIN vets v 
-    ON v.id = sp.vets_id;
+-- List all vets and their specialties, including vets with no specialties.
+SELECT vets.name AS vet, species.name AS specialty FROM specializations 
+LEFT JOIN vets ON vets.id = specializations.vets_id
+JOIN species ON specializations.species_id = species.id;
 
-SELECT 
-  a.name, 
-  v.name AS vet_name, 
-  vs.date_of_visit
-  FROM visits vs LEFT JOIN animals a ON a.id = vs.animals_id
-  LEFT JOIN vets v 
-    ON v.id = vs.vets_id
-  WHERE 
-    v.name = 'Stephanie Mendez' AND 
-    vs.date_of_visit 
-    BETWEEN 'Apr 1, 2020' AND 'Aug 30, 2020';
+-- List all animals that visited Stephanie Mendez between April 1st and August 30th, 2020
+SELECT animals.name, vets.name, visits.date_of_visit FROM visits JOIN vets ON visits.vets_id = vets.id JOIN animals ON visits.animals_id = animals.id WHERE vets.name = 'Stephanie Mendez' AND date_of_visit >= '2020-04-01' AND date_of_visit <= '2020-08-30';
 
-SELECT a.name, COUNT(*) 
-  FROM visits vs INNER JOIN animals a ON a.id = vs.animals_id
-  GROUP BY a.name
-  ORDER BY COUNT DESC
-  LIMIT 1;
+-- What animal has the most visits to vets?
+SELECT animals.name, COUNT(*) FROM visits INNER JOIN animals ON animals.id = visits.animals_id GROUP BY animals.name ORDER BY COUNT DESC LIMIT 1;
 
+-- Who was Maisy Smith's first visit?
 SELECT 
   a.name AS animal_name, 
   v.name AS vet_name,
@@ -89,6 +70,8 @@ SELECT
   WHERE v.name = 'Maisy Smith'
   ORDER BY vs.date_of_visit ASC
   LIMIT 1;
+
+
 
 SELECT animals.*, vets.*, visits.date_of_visit
 FROM visits
@@ -119,3 +102,6 @@ SELECT
   GROUP BY v.name, s.name
   ORDER BY COUNT DESC
   LIMIT 1;
+
+SELECT * FROM animals JOIN owners ON animals.owner_id=owners.id WHERE owners.full_name='Melody Pond';
+SELECT species.name, COUNT(*) FROM species LEFT JOIN animals ON species.id = animals.species_id GROUP BY species.name;
