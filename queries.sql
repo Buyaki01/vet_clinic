@@ -26,13 +26,15 @@ UPDATE animals SET weight_kg = weight_kg * -1;
 
 UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0; 
 
-SELECT * FROM animals a JOIN owners o ON a.owner_id = o.id WHERE o.full_name='Melody Pond';
+-- What animals belong to Melody Pond?
+SELECT * FROM animals JOIN owners ON animals.owner_id=owners.id WHERE owners.full_name='Melody Pond';
 
 SELECT * FROM animals a JOIN species s ON a.species_id = s.id WHERE s.name='pokemon';
 
 SELECT * FROM owners o FULL OUTER JOIN animals a ON o.id = a.owner_id;
 
-SELECT s.name, COUNT(*) FROM species s LEFT JOIN animals a ON s.id =  a.species_id GROUP BY s.name;
+-- How many animals are there per species?
+SELECT species.name, COUNT(*) FROM species LEFT JOIN animals ON species.id = animals.species_id GROUP BY species.name;
 
 SELECT * FROM animals a INNER JOIN owners o ON a.owner_id = o.id WHERE o.full_name ='Jennifer Orwell' AND a.species_id =(SELECT id from species WHERE name ='Digimon');
 
@@ -61,25 +63,12 @@ SELECT animals.name, vets.name, visits.date_of_visit FROM visits JOIN vets ON vi
 SELECT animals.name, COUNT(*) FROM visits INNER JOIN animals ON animals.id = visits.animals_id GROUP BY animals.name ORDER BY COUNT DESC LIMIT 1;
 
 -- Who was Maisy Smith's first visit?
-SELECT 
-  a.name AS animal_name, 
-  v.name AS vet_name,
-  vs.date_of_visit
-  FROM visits vs LEFT JOIN animals a ON a.id = vs.animals_id
-  LEFT JOIN vets v ON v.id = vs.vets_id
-  WHERE v.name = 'Maisy Smith'
-  ORDER BY vs.date_of_visit ASC
-  LIMIT 1;
+SELECT vets.name, visits.date_of_visit FROM visits JOIN vets ON visits.vets_id = vets.id WHERE vets.name='Maisy Smith' ORDER BY visits.date_of_visit ASC LIMIT 1;
 
+-- Details for most recent visit: animal information, vet information, and date of visit.
+SELECT animals.*, vets.*, visits.date_of_visit FROM visits LEFT JOIN animals ON animals.id = visits.animals_id LEFT JOIN vets ON vets.id = visits.vets_id ORDER BY visits.date_of_visit DESC LIMIT 1;
 
-
-SELECT animals.*, vets.*, visits.date_of_visit
-FROM visits
-LEFT JOIN animals ON animals.id = visits.animals_id
-LEFT JOIN vets ON vets.id = visits.vets_id
-ORDER BY visits.date_of_visit DESC
-LIMIT 1;
-
+-- How many visits were with a vet that did not specialize in that animal's species?
 SELECT 
 v.name AS vet_name,
 COUNT(*)
@@ -102,6 +91,3 @@ SELECT
   GROUP BY v.name, s.name
   ORDER BY COUNT DESC
   LIMIT 1;
-
-SELECT * FROM animals JOIN owners ON animals.owner_id=owners.id WHERE owners.full_name='Melody Pond';
-SELECT species.name, COUNT(*) FROM species LEFT JOIN animals ON species.id = animals.species_id GROUP BY species.name;
