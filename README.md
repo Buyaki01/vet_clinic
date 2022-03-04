@@ -2,7 +2,7 @@
 
 > Vet_clinic is a database where we can keep track of animals.
 
-![ER Diagram](vet_clinic.png)
+![ER Diagram](vet_clinic.jpeg)
 
 ## Getting Started
 
